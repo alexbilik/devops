@@ -1,15 +1,11 @@
 import groovy.transform.Field
 
-@Field static final String MAIN_CI_RESULT_PASS = '+1'
-@Field static final String MAIN_CI_RESULT_FAIL = '-1'
-@Field static final String MAIN_CI_RESULT_NULL = '0'
 @Field Boolean STAGE1 = true
 @Field Boolean STAGE2 = true
 @Field Boolean STAGE3 = true
-@Field Boolean STAGE4 = true
 
 pipeline {
-    agent { label AGENT_LABEL }
+    agent { label "AGENT_LABEL" }
 
     options {
         timestamps()
@@ -45,8 +41,6 @@ pipeline {
         } //stage
 
         stage('Build project jobs') {
-            failFast true
-
             steps {
                 script {
                     if (!env.PROJECTS) {

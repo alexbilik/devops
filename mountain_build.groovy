@@ -1,7 +1,3 @@
-Boolean STAGE1 = true
-Boolean STAGE2 = true
-Boolean STAGE3 = true
-
 pipeline {
     agent { label "AGENT_LABEL" }
 

@@ -7,7 +7,6 @@ pipeline {
 
     options {
         timestamps()
-        parallelsAlwaysFailFast()
     }
     parameters {
         string(name: 'REPOS', defaultValue: '', description: '')
@@ -58,8 +57,8 @@ pipeline {
                         def projectBuild = build(
                             job: "${project.JobPath}",
                             parameters: [
-                                string(name: 'REPOS', value: env.REPOS),
-                                string(name: 'VERSION', value: env.VERSION),
+                                string(name: 'REPOS', value: params.REPOS),
+                                string(name: 'VERSION', value: params.VERSION),
 
                                 booleanParam(name: 'EXECUTE_STAGE1', value: STAGE1),
                                 booleanParam(name: 'EXECUTE_STAGE2', value: STAGE2),
@@ -70,7 +69,7 @@ pipeline {
                         echo ("< Built project ${project.ProjectName} with status: ${projectBuild.result}")
                     } //for-loop
 
-                    echo("Running parallel Downstream Project Builds")
+                    echo("Running Downstream Project Builds - Ended!")
                 } //script
             } //steps
         } //stage

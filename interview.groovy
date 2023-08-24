@@ -1,15 +1,12 @@
-import groovy.transform.Field
-
-@Field Boolean STAGE1 = true
-@Field Boolean STAGE2 = true
-@Field Boolean STAGE3 = true
+Boolean STAGE1 = true
+Boolean STAGE2 = true
+Boolean STAGE3 = true
 
 pipeline {
     agent { label "AGENT_LABEL" }
 
     options {
         timestamps()
-        buildDiscarder(logRotator(daysToKeepStr: '30', artifactDaysToKeepStr: '7'))
         parallelsAlwaysFailFast()
     }
     parameters {
@@ -49,38 +46,31 @@ pipeline {
 
                     def Projects = readJSON(text: env.PROJECTS)
 
-                    // Create downstream jobs
-                    def parallelProjects = [:]
-
                     for (int i = 0; i < Projects.size(); i++) {
                         Object project = Projects[i]
 
-                        parallelProjects[project['ProjectName']] = {
+                        echo ("Running down stream project: ${project['ProjectName']}")
 
-                            if (project.ProjectName == "CARMEL"){
-                                STAGE2 = false
-                            }
+                        if (project.ProjectName == "CARMEL"){
+                            STAGE2 = false
+                        }
 
-                            def projectBuild = build(
-                                job: "${project.JobPath}",
-                                propagate: false,
-                                parameters: [
-                                    string(name: 'REPOS', value: env.REPOS),
-                                    string(name: 'VERSION', value: env.VERSION),
+                        def projectBuild = build(
+                            job: "${project.JobPath}",
+                            parameters: [
+                                string(name: 'REPOS', value: env.REPOS),
+                                string(name: 'VERSION', value: env.VERSION),
 
-                                    booleanParam(name: 'EXECUTE_STAGE1', value: STAGE1),
-                                    booleanParam(name: 'EXECUTE_STAGE2', value: STAGE2),
-                                    booleanParam(name: 'EXECUTE_STAGE3', value: STAGE3)
-                                ]
-                            )
+                                booleanParam(name: 'EXECUTE_STAGE1', value: STAGE1),
+                                booleanParam(name: 'EXECUTE_STAGE2', value: STAGE2),
+                                booleanParam(name: 'EXECUTE_STAGE3', value: STAGE3)
+                            ]
+                        )
 
-                            echo "< Built project ${project.ProjectName} with status: ${projectBuild.result}"
-                        } //parallelProjects
+                        echo ("< Built project ${project.ProjectName} with status: ${projectBuild.result}")
                     } //for-loop
 
-                    echo('running parallel Downstream Project Builds')
-                    parallel(parallelProjects)
-
+                    echo("Running parallel Downstream Project Builds")
                 } //script
             } //steps
         } //stage

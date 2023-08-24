@@ -3,7 +3,6 @@ pipeline {
 
     options {
         timestamps()
-        parallelsAlwaysFailFast()
     }
     parameters {
         string(name: 'REPOS', defaultValue: '', description: '')

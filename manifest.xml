@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+    <remote name="github" fetch="https://github.com"/>
+
+    <default revision="invalidRevision" sync-c="true" sync-j="16"/>
+
+    <!-- Manifest -->
+    <project path="sources/manifest" remote="github" name="manifests" revision="main" groups="PROJ_A PROJ_B"/>
+
+    <project path="sources/kernel_proj_a" remote="github" name="intel.kernel" revision="ver-1" groups="PROJ_A"/>
+    <project path="sources/kernel_proj_b" remote="github" name="intel.kernel" revision="ver-2" groups="PROJ_B"/>
+
+    <project path="sources/boot" remote="github" name="intel.boot" revision="main" groups="PROJ_A PROJ_B"/>
+    <project path="sources/ucpa" remote="github" name="intel.ucpa" revision="main" groups="PROJ_A"/>
+    <project path="sources/ucla" remote="github" name="intel.ucla" revision="main" groups="PROJ_B"/>
+    <project path="sources/kfc" remote="github" name="intel.kfc" revision="main" groups="PROJ_B"/>
+    <project path="sources/lan" remote="github" name="ethernet.linux" revision="main" groups="PROJ_A PROJ_B"/>
+    <project path="sources/utest" remote="github" name="fw-unittest" revision="main" groups="PROJ_A PROJ_B"/>
+
+    <!-- not for release - internal repositories -->
+    <project path="sources/fw-tests" remote="github" name="fw-tests" revision="main" groups="PROJ_A PROJ_B notdefault"/>
+    <project path="sources/regression" remote="github" name="intel.regression-tests" revision="main" groups="PROJ_A PROJ_B notdefault"/>
+    <project path="sources/tools" remote="github" name="intel.tools" revision="main" groups="PROJ_A PROJ_B notdefault"/>
+
+</manifest>
